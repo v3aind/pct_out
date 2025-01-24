@@ -368,14 +368,14 @@ dormant_config_df = pd.DataFrame(
 )
 dormant_config_df.to_excel(writer, sheet_name="Dormant-Config", index=False)
 
-        # Step 3: Provide Download Option
-        with open(output_file_name, "rb") as file:
-            st.success(f"File '{output_file_name}' generated successfully!")
-            st.download_button(
-                label="Download Excel File",
-                data=file,
-                file_name=output_file_name,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            )
-    else:
-        st.error("Please fill in all required inputs and upload a valid file.")
+# Step 3: Provide Download Option
+with open(output_file_name, "rb") as file:
+    st.success(f"File '{output_file_name}' generated successfully!")
+    st.download_button(
+    label="Download Excel File",
+    data=file,
+    file_name=output_file_name,
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+else:
+    st.error("Please fill in all required inputs and upload a valid file.")
