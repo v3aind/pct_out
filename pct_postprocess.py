@@ -181,7 +181,6 @@ if st.button("Generate Excel File"):
             # Save the modified DataFrame to the Excel sheet
             df.to_excel(writer, sheet_name="Rules-Renewal", index=False)
 
-
             # Sheet 11: Rules-GSI GRP Pack
             gsi_grp_pack_df = pd.DataFrame(
                 {
@@ -261,22 +260,21 @@ if st.button("Generate Excel File"):
 
             # Sheet 16: Library-Addon-Name
             df = pd.read_excel(file1, sheet_name="Rules-Library-Addon")
-            df.to_excel(writer, sheet_name="Library-Addon-Name", index=False)
-
+            
             # List of columns to process to maintain as string
             columns_to_process = ["Master Shortcode", "Active Period Length", "Grace Period"]
-
+            
             for col in columns_to_process:
                 # Ensure the column exists
                 if col in df.columns:
-                    # Convert to string and strip whitespace, replace NaN with empty strings
-                    df[col] = df[col].astype(str).str.strip().replace("nan", "")
+                    # Convert to string, strip whitespace, replace NaN with empty strings
+                    df[col] = df[col].fillna("").astype(str).str.strip().replace("nan", "")
                 else:
                     # If column is missing, create it with default empty strings
                     df[col] = ""
-
-                # Replace any NaN with empty strings explicitly to avoid issues
-                df[col] = df[col].fillna("")
+            
+            # Save the modified DataFrame to the Excel sheet
+            df.to_excel(writer, sheet_name="Library-Addon-Name", index=False)
 
             # Sheet 17: Library-Addon-DA -later get it from DDM
             library_addon_da_df = pd.DataFrame(
