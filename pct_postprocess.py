@@ -58,7 +58,10 @@ if st.button("Generate Excel File"):
 
             # Replace any NaN with empty strings explicitly to avoid issues
             df["Short Code"] = df["Short Code"].fillna("")
-
+            
+            # Save the processed DataFrame to the output Excel file
+            df.to_excel(writer, sheet_name="Rules-Keyword", index=False)
+            
             # Rules-Alias
             df = pd.read_excel(file1, sheet_name="Rules-Alias")
 
@@ -72,6 +75,9 @@ if st.button("Generate Excel File"):
 
             # Replace any NaN with empty strings explicitly to avoid issues
             df["Short Code"] = df["Short Code"].fillna("")
+
+            # Save the processed DataFrame to the output Excel file
+            df.to_excel(writer, sheet_name="Rules-Alias", index=False)
             
             # Process other sheets
             sheet_names = [               
