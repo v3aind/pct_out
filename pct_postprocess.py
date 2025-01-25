@@ -45,10 +45,32 @@ if st.button("Generate Excel File"):
             )
             po_df.to_excel(writer, sheet_name="PO", index=False)
 
+            # List of sheets to process
+            sheets_to_process = ["Rules-Keyword", "Rules-Alias"]
+
+            # Loop through each sheet and process it
+            for sheet in sheets_to_process:
+                # Read the sheet into a DataFrame
+                df = pd.read_excel(file1, sheet_name=sheet)
+
+                # Ensure the "Short Code" column exists and manipulate it as needed
+                if "Short Code" in df.columns:
+                    # Convert to string and strip whitespace, replace NaN with empty strings
+                    df["Short Code"] = df["Short Code"].astype(str).str.strip().replace("nan", "")
+                else:
+                    # If "Short Code" column is missing, create it with default empty strings
+                    df["Short Code"] = ""
+
+                # Replace any NaN with empty strings explicitly to avoid issues
+                df["Short Code"] = df["Short Code"].fillna("")
+
+                # Save the processed DataFrame back to a file or further process as needed
+                # (You can write this back to a dictionary, a file, or process further)
+                print(f"Processed sheet: {sheet}")
+
+
             # Process other sheets
-            sheet_names = [
-                "Rules-Keyword",
-                "Rules-Alias",
+            sheet_names = [               
                 "Rules-Header",
                 "Rules-PCRF",
             ]
@@ -135,6 +157,17 @@ if st.button("Generate Excel File"):
             else:
                 df["Amount"] = None  # Handle cases where "Amount" column is missing
 
+            # Ensure the "Reg Subaction" column exists and manipulate it as needed
+            if "Reg Subaction" in df.columns:
+                # Convert to string and strip whitespace, replace NaN with empty strings
+                df["Reg Subaction"] = df["Reg Subaction"].astype(str).str.strip().replace("nan", "")
+            else:
+                # If "Reg Subaction" column is missing, create it with default empty strings
+                df["Reg Subaction"] = ""
+
+            # Replace any NaN with empty strings explicitly to avoid issues
+            df["Reg Subaction"] = df["Reg Subaction"].fillna("")
+
             # Save the modified DataFrame to the Excel sheet
             df.to_excel(writer, sheet_name="Rules-Renewal", index=False)
 
@@ -219,6 +252,21 @@ if st.button("Generate Excel File"):
             # Sheet 16: Library-Addon-Name
             df = pd.read_excel(file1, sheet_name="Rules-Library-Addon")
             df.to_excel(writer, sheet_name="Library-Addon-Name", index=False)
+
+            # List of columns to process to maintain as string
+            columns_to_process = ["Master Shortcode", "Active Period Length", "Grace Period"]
+
+            for col in columns_to_process:
+                # Ensure the column exists
+                if col in df.columns:
+                    # Convert to string and strip whitespace, replace NaN with empty strings
+                    df[col] = df[col].astype(str).str.strip().replace("nan", "")
+                else:
+                    # If column is missing, create it with default empty strings
+                    df[col] = ""
+
+                # Replace any NaN with empty strings explicitly to avoid issues
+                df[col] = df[col].fillna("")
 
             # Sheet 17: Library-Addon-DA -later get it from DDM
             library_addon_da_df = pd.DataFrame(
