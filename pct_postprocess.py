@@ -45,30 +45,34 @@ if st.button("Generate Excel File"):
             )
             po_df.to_excel(writer, sheet_name="PO", index=False)
 
-            # List of sheets to process
-            sheets_to_process = ["Rules-Keyword", "Rules-Alias"]
+            # Rules-Keyword
+            df = pd.read_excel(file1, sheet_name="Rules-Keyword")
 
-            # Loop through each sheet and process it
-            for sheet in sheets_to_process:
-                # Read the sheet into a DataFrame
-                df = pd.read_excel(file1, sheet_name=sheet)
+            # Ensure the "Short Code" column exists and manipulate it as needed
+            if "Short Code" in df.columns:
+                # Convert to string and strip whitespace, replace NaN with empty strings
+                df["Short Code"] = df["Short Code"].astype(str).str.strip().replace("nan", "")
+            else:
+                # If "Short Code" column is missing, create it with default empty strings
+                df["Short Code"] = ""
 
-                # Ensure the "Short Code" column exists and manipulate it as needed
-                if "Short Code" in df.columns:
-                    # Convert to string and strip whitespace, replace NaN with empty strings
-                    df["Short Code"] = df["Short Code"].astype(str).str.strip().replace("nan", "")
-                else:
-                    # If "Short Code" column is missing, create it with default empty strings
-                    df["Short Code"] = ""
+            # Replace any NaN with empty strings explicitly to avoid issues
+            df["Short Code"] = df["Short Code"].fillna("")
 
-                # Replace any NaN with empty strings explicitly to avoid issues
-                df["Short Code"] = df["Short Code"].fillna("")
+            # Rules-Alias
+            df = pd.read_excel(file1, sheet_name="Rules-Alias")
 
-                # Save the processed DataFrame back to a file or further process as needed
-                # (You can write this back to a dictionary, a file, or process further)
-                print(f"Processed sheet: {sheet}")
+            # Ensure the "Short Code" column exists and manipulate it as needed
+            if "Short Code" in df.columns:
+                # Convert to string and strip whitespace, replace NaN with empty strings
+                df["Short Code"] = df["Short Code"].astype(str).str.strip().replace("nan", "")
+            else:
+                # If "Short Code" column is missing, create it with default empty strings
+                df["Short Code"] = ""
 
-
+            # Replace any NaN with empty strings explicitly to avoid issues
+            df["Short Code"] = df["Short Code"].fillna("")
+            
             # Process other sheets
             sheet_names = [               
                 "Rules-Header",
